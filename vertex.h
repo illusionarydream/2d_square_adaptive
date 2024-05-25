@@ -5,6 +5,6 @@
 struct vertex {
     double col;
     double grad_col;
-} Vertex[100][100];
+} Vertex[1200][1200];
 
 #endif
