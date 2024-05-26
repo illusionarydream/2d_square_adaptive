@@ -6,8 +6,10 @@ set(CMAKE_CXX_STANDARD 11)
 # Add the source files
 set(SOURCES
     main.cpp
-    tree.h
     vertex.h
+    octree.h
+    varray.h
+    picture_process.h
 )
 
 # Add the executable
