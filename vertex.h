@@ -3,8 +3,8 @@
 #include <bits/stdc++.h>
 
 struct vertex {
-    double col;
-    double grad_col;
+    float col;
+    float grad_col;
     // the position of the vertex
     int x;
     int y;

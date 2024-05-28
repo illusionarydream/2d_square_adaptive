@@ -2,32 +2,31 @@
 #define PICTURE_PROCESS_H
 #include <fstream>
 #include <iostream>
+#define gt_col(y, x) gt_col[(y) * width + (x)]
 
-void read_grayscale_image(const char *filename, double **&map, int &width, int &height) {
+void read_grayscale_image(const char *filename, float *&gt_col, int &width, int &height) {
     std::ifstream input_imageFile(filename);
     if (input_imageFile.is_open()) {
         {
             std::string format;
             int maxVal;
             input_imageFile >> format >> width >> height >> maxVal;
+
+            gt_col = new float[width * height];
             if (format == "P2") {
-                map = new double *[height];
                 for (int i = 0; i < height; i++) {
-                    map[i] = new double[width];
                     for (int j = 0; j < width; j++) {
                         int pixel;
                         input_imageFile >> pixel;
-                        map[i][j] = static_cast<double>(pixel) / maxVal;
+                        gt_col(i, j) = static_cast<float>(pixel) / maxVal;
                     }
                 }
             } else if (format == "P5") {
-                map = new double *[height];
                 for (int i = 0; i < height; i++) {
-                    map[i] = new double[width];
                     for (int j = 0; j < width; j++) {
                         unsigned char pixel;
                         input_imageFile.read(reinterpret_cast<char *>(&pixel), sizeof(pixel));
-                        map[i][j] = static_cast<double>(pixel) / maxVal;
+                        gt_col(i, j) = static_cast<float>(pixel) / maxVal;
                     }
                 }
             } else {
@@ -39,7 +38,7 @@ void read_grayscale_image(const char *filename, double **&map, int &width, int &
     }
     std::cout << "Image read from " << filename << std::endl;
 }
-void write_grayscale_image(const char *filename, double **map, int width, int height) {
+void write_grayscale_image(const char *filename, float *gt_col, int width, int height) {
     std::ofstream output_imageFile(filename);
     if (output_imageFile.is_open()) {
         output_imageFile << "P3" << std::endl;
@@ -47,7 +46,7 @@ void write_grayscale_image(const char *filename, double **map, int width, int he
         output_imageFile << "255" << std::endl;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int pixel = static_cast<int>(map[i][j] * 255);
+                int pixel = static_cast<int>(gt_col(i, j) * 255);
                 if (pixel < 0) {
                     pixel = 0;
                 } else if (pixel > 255) {

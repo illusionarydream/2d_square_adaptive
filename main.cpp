@@ -1,13 +1,14 @@
 #include "octree.h"
 #define LEARNING_RATE 0.01
-#define ITERATIONS 50
+#define ITERATIONS 1000
 
 int main() {
     Octree tree("../input/input_1.pgm");
 
     for (int i = 0; i < ITERATIONS; i++) {
-        tree.grad_backwards();
-        tree.grad_update(LEARNING_RATE);
+        std::cout << "iteration: " << i << std::endl;
+
+        tree.grad_update_in_gpu(LEARNING_RATE);
         tree.split_tree(5);
 
         if (i % 100 == 0) {

@@ -40,5 +40,5 @@ class Varray {
     }
 };
 
-Varray VertexArray;
+extern Varray VertexArray;
 #endif
